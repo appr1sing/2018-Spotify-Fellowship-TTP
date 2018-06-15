@@ -1,0 +1,22 @@
+
+
+func sortByStrings(s: String, t: String) -> String {
+
+    let c = Array(s).map { String($0) }
+    let d = Array(t).map { String($0) }
+    var newArray = [String]()
+
+    for char in d {
+        if c.contains(char)  {
+            if var numOfChar = c.filter({ $0 == char }).count as Int? {
+                while numOfChar > 0 {
+                    newArray.append(char)
+                    numOfChar -= 1
+                }
+            }
+
+        }
+    }
+
+    return newArray.joined(separator: "")
+}

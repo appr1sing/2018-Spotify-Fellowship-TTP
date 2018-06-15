@@ -1,0 +1,45 @@
+func decodeStrings(_ s: String) -> String {
+
+    var newArr = Array(s).map { String($0) }
+    var t = newArr.filter { $0 == "[" }.count
+    var innerIndex_rightClosingBracket = 0
+    var innerIndex_leftClosingBracket = 0
+    var innerValue = ""
+    var newString = ""
+
+    while t > 0 {
+        for (index, char) in newArr.enumerated() {
+
+            if char == "]" {
+                innerIndex_rightClosingBracket = index
+                break
+            }
+
+        }
+
+        for (index, char) in newArr.reversed().enumerated() {
+            if char == "[" {
+                innerIndex_leftClosingBracket = abs(index - newArr.count + 1)
+                break
+            }
+        }
+
+        innerValue = Array(newArr[innerIndex_leftClosingBracket...innerIndex_rightClosingBracket])
+            .filter { $0 != "[" && $0 != "]" }
+            .joined(separator: "")
+
+        if let k = Int(newArr[innerIndex_leftClosingBracket - 1]) as Int?,
+            let right = Array(newArr[innerIndex_rightClosingBracket...]).filter( { $0 != "]" }) as? [String] {
+            newString = String(repeating: innerValue, count : k)
+            innerValue = newString + right.joined(separator: "")
+        }
+
+        newArr = Array(newArr[..<(innerIndex_leftClosingBracket - 1)])
+                + Array(innerValue).map { String($0)} + ["]"]
+
+        t -= 1
+    }
+    return newString
+
+
+}
